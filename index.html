@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة مدرسة بلماحي للدعم - Belmahi's School</title>
+    <!-- مكتبة Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --primary-blue: #0A1931;
+            --secondary-blue: #153462;
+            --accent-blue: #005C53;
+            --light-bg: #F4F6F9;
+            --white: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --success: #10B981;
+            --danger: #EF4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-badge {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-blue);
+            border: 2px solid var(--white);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .logo-badge .bs-text {
+            font-size: 1.2rem;
+            line-height: 1;
+            letter-spacing: 1px;
+        }
+
+        .brand-name h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .brand-name p {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+
+        .role-switcher {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            padding: 4px;
+            border-radius: 8px;
+            gap: 4px;
+        }
+
+        .role-btn {
+            background: transparent;
+            border: none;
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .role-btn.active {
+            background: var(--white);
+            color: var(--primary-blue);
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-blue);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Tabs Navigation for Teacher */
+        .teacher-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: #E2E8F0;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-dark);
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--secondary-blue);
+            color: var(--white);
+        }
+
+        /* Cards & Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--secondary-blue);
+        }
+
+        .btn {
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-blue);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-pending { background: #FEF3C7; color: #D97706; }
+        .badge-submitted { background: #DBEAFE; color: #2563EB; }
+        .badge-graded { background: #D1FAE5; color: #059669; }
+
+        .view-panel, .teacher-tab-content {
+            display: none;
+        }
+
+        .view-panel.active, .teacher-tab-content.active {
+            display: block;
+        }
+
+        .pdf-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #DC2626;
+            font-weight: bold;
+            text-decoration: none;
+            background: #FEE2E2;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+
+        /* Modal Authentication */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand-container">
+            <div class="logo-badge">
+                <span class="bs-text">B·S</span>
+            </div>
+            <div class="brand-name">
+                <h1>مدرسة بلماحي للدعم</h1>
+                <p>BELMAHI'S SCHOOL - منصة الواجبات عن بعد</p>
+            </div>
+        </div>
+        <div class="role-switcher">
+            <button class="role-btn active" onclick="switchRole('student')">فضاء التلميذ</button>
+            <button class="role-btn" onclick="openAuthModal()">فضاء الأستاذ</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Password Auth Modal -->
+        <div id="authModal" class="modal-overlay">
+            <div class="modal">
+                <h3 style="margin-bottom: 1rem; color: var(--secondary-blue);">تسجيل الدخول للأستاذ</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">يرجى إدخال كلمة المرور للوصول إلى لوحة التحكم</p>
+                <div class="form-group">
+                    <input type="password" id="teacherPassword" placeholder="كلمة المرور">
+                </div>
+                <p id="authError" style="color: var(--danger); font-size: 0.85rem; display: none; margin-bottom: 1rem;">كلمة المرور غير صحيحة!</p>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="verifyPassword()" style="flex: 1;">دخول</button>
+                    <button class="btn" onclick="closeAuthModal()" style="flex: 1; background: #64748B;">إلغاء</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student View Panel -->
+        <section id="studentView" class="view-panel active">
+            <div class="section-title">
+                <h2>الواجبات والتمارين المتاحة</h2>
+            </div>
+            <div id="studentExerciseList" class="grid-container">
+                <!-- Data loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Teacher View Panel -->
+        <section id="teacherView" class="view-panel">
+            <div class="teacher-tabs">
+                <button class="tab-btn active" onclick="switchTeacherTab('uploadTab')">رفع الواجبات (PDF)</button>
+                <button class="tab-btn" onclick="switchTeacherTab('gradingTab')">تصحيح الواجبات والتنقيط</button>
+            </div>
+
+            <!-- Tab 1: Upload Assignments -->
+            <div id="uploadTab" class="teacher-tab-content active">
+                <div class="card" style="max-width: 600px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 1.2rem; color: var(--secondary-blue);">رفع واجب جديد للتلاميذ</h3>
+                    <form id="uploadAssignmentForm">
+                        <div class="form-group">
+                            <label>عنوان الواجب / التمرين</label>
+                            <input type="text" id="assignTitle" placeholder="مثال: واجب منزلي في الفيزياء" required>
+                        </div>
+                        <div class="form-group">
+                            <label>المادة / المستوى</label>
+                            <input type="text" id="assignSubject" placeholder="مثال: علوم تجريبية - 3 ثانوي" required>
+                        </div>
+                        <div class="form-group">
+                            <label>رفع ملف الواجب (PDF)</label>
+                            <input type="file" id="assignPdf" accept=".pdf" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ملاحظات أو تعليمات إضافية</label>
+                            <textarea id="assignInstructions" rows="3" placeholder="اكتب أي تعليمات للتلاميذ هنا..."></textarea>
+                        </div>
+                        <button type="submit" class="btn">نشر الواجب للطلاب</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tab 2: Submissions & Grading -->
+            <div id="gradingTab" class="teacher-tab-content">
+                <div class="section-title">
+                    <h3>قائمة حلول التلاميذ المحصل عليها</h3>
+                </div>
+                <div id="teacherSubmissionsList">
+                    <!-- Homework solutions list -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- Supabase Config (ضع مفاتيح حسابك هنا عند الربط) ---
+        const SUPABASE_URL = "YOUR_SUPABASE_URL";
+        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
+        const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+        // Local State Data
+        let state = {
+            assignments: [
+                {
+                    id: 1,
+                    title: "تمرين في الفيزياء - الميكانيك",
+                    subject: "علوم تجريبية - بكالوريا",
+                    pdfUrl: "#",
+                    instructions: "يرجى حل التمرين في ورقة قاطعة وإرسال الإجابة ملخصة.",
+                    submissions: [
+                        {
+                            studentName: "علاء الدين",
+                            answer: "حل الجزء الأول: المعادلة التفاضلية للحركة هي d²x/dt² + ω²x = 0...",
+                            status: "submitted", // submitted, graded
+                            grade: null,
+                            feedback: null
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Navigation & Authentication Logic
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+            document.getElementById('teacherPassword').value = '';
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function verifyPassword() {
+            const pass = document.getElementById('teacherPassword').value;
+            if (pass === "momo31.A") {
+                closeAuthModal();
+                switchRole('teacher');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+            }
+        }
+
+        function switchRole(role) {
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+
+            if (role === 'student') {
+                document.querySelectorAll('.role-btn')[0].classList.add('active');
+                document.getElementById('studentView').classList.add('active');
+                renderStudentView();
+            } else {
+                document.querySelectorAll('.role-btn')[1].classList.add('active');
+                document.getElementById('teacherView').classList.add('active');
+                renderTeacherView();
+            }
+        }
+
+        function switchTeacherTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.teacher-tab-content').forEach(tab => tab.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Render Student View
+        function renderStudentView() {
+            const container = document.getElementById('studentExerciseList');
+            container.innerHTML = '';
+
+            state.assignments.forEach(item => {
+                const sub = item.submissions.find(s => s.studentName === "علاء الدين") || { status: 'pending' };
+
+                let statusBadge = `<span class="badge badge-pending">لم يتم الحل</span>`;
+                if (sub.status === 'submitted') statusBadge = `<span class="badge badge-submitted">تم إرسال الحل</span>`;
+                if (sub.status === 'graded') statusBadge = `<span class="badge badge-graded">تم التصحيح</span>`;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <h3>${item.title}</h3>
+                        ${statusBadge}
+                    </div>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">${item.subject}</p>
+
+                    <div style="margin: 1rem 0;">
+                        <a href="${item.pdfUrl}" class="pdf-link" target="_blank">📄 تحميل أو عرض ملف الواجب (PDF)</a>
+                    </div>
+
+                    ${item.instructions ? `<p style="font-size:0.9rem; margin-bottom:1rem;"><strong>ملاحظات:</strong> ${item.instructions}</p>` : ''}
+
+                    ${sub.status === 'pending' ? `
+                        <div class="form-group">
+                            <label>اكتب حل الواجب هنا:</label>
+                            <textarea id="ans_${item.id}" rows="3" placeholder="اكتب إجابتك بالتفصيل..."></textarea>
+                        </div>
+                        <button class="btn btn-success" onclick="submitSolution(${item.id})">إرسال الحل للأستاذ</button>
+                    ` : ''}
+
+                    ${sub.status === 'submitted' ? `
+                        <div style="background:#F1F5F9; padding:10px; border-radius:6px; font-size:0.9rem;">
+                            <strong>إجابتك المرسلة:</strong> ${sub.answer}
+                        </div>
+                    ` : ''}
+
+                    ${sub.status === 'graded' ? `
+                        <div style="background:#F0FDF4; padding:12px; border-radius:6px; border:1px solid #BBF7D0;">
+                            <div style="font-size:1.1rem; font-weight:bold; color:var(--success);">النقاط: ${sub.grade}</div>
+                            <p style="font-size:0.9rem; margin-top:4px;"><strong>ملاحظة الأستاذ:</strong> ${sub.feedback}</p>
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Student Action
+        function submitSolution(assignId) {
+            const ansText = document.getElementById(`ans_${assignId}`).value;
+            if(!ansText.trim()) return alert("رجاءً اكتب الحل أولاً");
+
+            const assign = state.assignments.find(a => a.id === assignId);
+            assign.submissions.push({
+                studentName: "علاء الدين",
+                answer: ansText,
+                status: "submitted",
+                grade: null,
+                feedback: null
+            });
+
+            alert("تم إرسال إجابتك بنجاح للأستاذ!");
+            renderStudentView();
+        }
+
+        // Render Teacher View
+        function renderTeacherView() {
+            const container = document.getElementById('teacherSubmissionsList');
+            container.innerHTML = '';
+
+            let count = 0;
+            state.assignments.forEach(assign => {
+                assign.submissions.forEach((sub, index) => {
+                    count++;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+                            <strong>اسم التلميذ: ${sub.studentName}</strong>
+                            <span class="badge ${sub.status === 'graded' ? 'badge-graded' : 'badge-submitted'}">
+                                ${sub.status === 'graded' ? 'تم التصحيح' : 'بحاجة لتصحيح'}
+                            </span>
+                        </div>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">الواجب: ${assign.title} (${assign.subject})</p>
+
+                        <div style="background:#F8FAFC; padding:12px; border-radius:6px; margin:1rem 0; border-right:3px solid var(--secondary-blue);">
+                            <strong>حل التلميذ:</strong><br>${sub.answer}
+                        </div>
+
+                        ${sub.status === 'submitted' ? `
+                            <div style="display:grid; grid-template-columns: 1fr 2fr auto; gap:10px; align-items:end;">
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>النقطة</label>
+                                    <input type="text" id="grade_${assign.id}_${index}" placeholder="مثال: 18/20">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>الملاحظة</label>
+                                    <input type="text" id="fb_${assign.id}_${index}" placeholder="اكتب ملاحظة أو توجيه للتلميذ">
+                                </div>
+                                <button class="btn btn-success" onclick="saveGrade(${assign.id},${index})">حفظ التصحيح</button>
+                            </div>
+                        ` : `
+                            <div style="background:#F0FDF4; padding:10px; border-radius:6px;">
+                                <strong>النتيجة الممنوحة:</strong> ${sub.grade} \vert{} <strong>الملاحظات:</strong> ${sub.feedback}
+                            </div>
+                        `}
+                    `;
+                    container.appendChild(card);
+                });
+            });
+
+            if (count === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-muted);">لا توجد أي إجابات مرفوعة من التلاميذ حالياً.</p>`;
+            }
+        }
+
+        // Upload Homework Form Action
+        document.getElementById('uploadAssignmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('assignTitle').value;
+            const subject = document.getElementById('assignSubject').value;
+            const pdfFile = document.getElementById('assignPdf').files[0];
+            const instructions = document.getElementById('assignInstructions').value;
+
+            // Create blob URL for PDF preview locally
+            const pdfUrl = URL.createObjectURL(pdfFile);
+
+            const newAssign = {
+                id: Date.now(),
+                title: title,
+                subject: subject,
+                pdfUrl: pdfUrl,
+                instructions: instructions,
+                submissions: []
+            };
+
+            state.assignments.unshift(newAssign);
+            this.reset();
+            alert("تم نشر ملف الواجب بنجاح!");
+            switchTeacherTab('gradingTab');
+            renderTeacherView();
+        });
+
+        // Save Grade Action
+        function saveGrade(assignId, subIndex) {
+            const grade = document.getElementById(`grade_${assignId}_${subIndex}`).value;
+            const feedback = document.getElementById(`fb_${assignId}_${subIndex}`).value;
+
+            if (!grade) return alert("يرجى كتابة النقطة أولاً");
+
+            const assign = state.assignments.find(a => a.id === assignId);
+            assign.submissions[subIndex].grade = grade;
+            assign.submissions[subIndex].feedback = feedback || "تم التصحيح";
+            assign.submissions[subIndex].status = "graded";
+
+            alert("تم حفظ التصحيح والنقطة وتحديث حساب التلميذ!");
+            renderTeacherView();
+        }
+
+        // Initial Run
+        renderStudentView();
+    </script>
+</body>
+</html>
