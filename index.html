@@ -4,259 +4,273 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة مدرسة بلماحي للدعم - Belmahi's School</title>
-    <!-- مكتبة Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- خط تجوال العصري من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #0A1931;
-            --secondary-blue: #153462;
-            --accent-blue: #005C53;
-            --light-bg: #F4F6F9;
-            --white: #FFFFFF;
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-            --success: #10B981;
-            --danger: #EF4444;
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-gold: #f59e0b;
+            --text-light: #f8fafc;
+            --text-dim: #94a3b8;
+            --border-color: #334155;
+            --glass-bg: rgba(30, 41, 59, 0.7);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.25s ease;
         }
 
         body {
-            background-color: var(--light-bg);
-            color: var(--text-dark);
+            background-color: var(--bg-main);
+            color: var(--text-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-image: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
         }
 
-        /* Navbar */
+        /* Top Header Navigation */
         header {
-            background-color: var(--primary-blue);
-            color: var(--white);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .brand-container {
+        .brand-box {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .logo-badge {
-            width: 50px;
-            height: 50px;
-            background: var(--primary-blue);
-            border: 2px solid var(--white);
-            border-radius: 50%;
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #0284c7, #0d9488);
+            border-radius: 12px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            color: var(--white);
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
         }
 
-        .logo-badge .bs-text {
-            font-size: 1.2rem;
-            line-height: 1;
-            letter-spacing: 1px;
-        }
-
-        .brand-name h1 {
-            font-size: 1.2rem;
+        .brand-titles h1 {
+            font-size: 1.25rem;
             font-weight: 700;
+            color: var(--text-light);
         }
 
-        .brand-name p {
+        .brand-titles p {
             font-size: 0.75rem;
-            color: #94A3B8;
+            color: var(--accent-blue);
+            letter-spacing: 0.5px;
         }
 
-        .role-switcher {
-            display: flex;
-            background: rgba(255,255,255,0.1);
+        .nav-switch {
+            background: #020617;
             padding: 4px;
+            border-radius: 10px;
+            display: flex;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-link {
+            padding: 8px 18px;
             border-radius: 8px;
-            gap: 4px;
-        }
-
-        .role-btn {
-            background: transparent;
-            border: none;
-            color: var(--white);
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
+            color: var(--text-dim);
+            text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
         }
 
-        .role-btn.active {
-            background: var(--white);
-            color: var(--primary-blue);
+        .nav-link.active {
+            background: var(--accent-blue);
+            color: #020617;
+            font-weight: 700;
+            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
         }
 
+        /* Container & Layout */
         main {
             flex: 1;
-            max-width: 1200px;
+            max-width: 1100px;
             width: 100%;
             margin: 2rem auto;
             padding: 0 1.5rem;
         }
 
-        .section-title {
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            color: var(--secondary-blue);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
         }
 
-        /* Tabs Navigation for Teacher */
-        .teacher-tabs {
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Headings */
+        .section-header {
+            margin-bottom: 2rem;
             display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .tab-btn {
-            padding: 10px 20px;
-            background: #E2E8F0;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--text-dark);
-            transition: 0.2s;
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            position: relative;
+            padding-right: 12px;
         }
 
-        .tab-btn.active {
-            background: var(--secondary-blue);
-            color: var(--white);
+        .section-header h2::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 4px;
+            background: var(--accent-blue);
+            border-radius: 2px;
         }
 
-        /* Cards & Layout */
-        .grid-container {
+        /* Grid Cards Layout */
+        .grid-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
         }
 
         .card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            width: fit-content;
+        }
+
+        .pdf-btn:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        /* Forms Styling */
+        .form-control {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
             margin-bottom: 1rem;
         }
 
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
+        .form-control label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
         }
 
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
+        .form-control input, .form-control textarea {
+            background: #090d16;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text-light);
             font-size: 0.95rem;
             outline: none;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--secondary-blue);
+        .form-control input:focus, .form-control textarea:focus {
+            border-color: var(--accent-blue);
         }
 
-        .btn {
-            background-color: var(--secondary-blue);
-            color: var(--white);
+        .action-btn {
+            background: var(--accent-blue);
+            color: #020617;
             border: none;
             padding: 10px 20px;
-            border-radius: 6px;
+            border-radius: 8px;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: background 0.2s;
+            width: 100%;
         }
 
-        .btn:hover {
-            background-color: var(--primary-blue);
+        .action-btn:hover {
+            opacity: 0.9;
         }
 
-        .btn-success {
-            background-color: var(--success);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .badge-pending { background: #FEF3C7; color: #D97706; }
-        .badge-submitted { background: #DBEAFE; color: #2563EB; }
-        .badge-graded { background: #D1FAE5; color: #059669; }
-
-        .view-panel, .teacher-tab-content {
-            display: none;
-        }
-
-        .view-panel.active, .teacher-tab-content.active {
-            display: block;
-        }
-
-        .pdf-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #DC2626;
-            font-weight: bold;
-            text-decoration: none;
-            background: #FEE2E2;
-            padding: 6px 12px;
-            border-radius: 6px;
-            margin-top: 5px;
-        }
-
-        /* Modal Authentication */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
+        /* Password Auth Section */
+        .auth-box {
             max-width: 400px;
+            margin: 3rem auto;
             text-align: center;
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
         }
     </style>
 </head>
@@ -264,24 +278,37 @@
 
     <!-- Header Navigation -->
     <header>
-        <div class="brand-container">
-            <div class="logo-badge">
-                <span class="bs-text">B·S</span>
-            </div>
-            <div class="brand-name">
+        <div class="brand-box">
+            <div class="logo-circle">BS</div>
+            <div class="brand-titles">
                 <h1>مدرسة بلماحي للدعم</h1>
-                <p>BELMAHI'S SCHOOL - منصة الواجبات عن بعد</p>
+                <p>BELMAHI'S ACADEMY</p>
             </div>
         </div>
-        <div class="role-switcher">
-            <button id="btnStudentNav" class="role-btn active">فضاء التلميذ</button>
-            <button id="btnTeacherNav" class="role-btn">فضاء الأستاذ</button>
-        </div>
+
+        <nav class="nav-switch">
+            <div id="navStudent" class="nav-link active" onclick="showSection('student')">
+                🎓 فضاء التلميذ
+            </div>
+            <div id="navTeacher" class="nav-link" onclick="showSection('teacher')">
+                👨‍🏫 فضاء الأستاذ
+            </div>
+        </nav>
     </header>
 
     <main>
-        <!-- Password Auth Modal -->
-        <div id="authModal" class="modal-overlay">
-            <div class="modal">
-                <h3 style="margin-bottom: 1rem; color: var(--secondary-blue);">تسجيل الدخول للأستاذ</h3>
-                <p style="font-size: 0.85
+
+        <!-- 1. فضاء التلميذ -->
+        <section id="student" class="page-section active">
+            <div class="section-header">
+                <h2>الواجبات والتمارين المتاحة</h2>
+            </div>
+
+            <div class="grid-cards">
+                <!-- واجب محاكى -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>تمرين في الفيزياء - الميكانيك</h3>
+                        <span class="card-tag">علوم تجريبية - بكالوريا</span>
+                    </div>
+                    <p style="color: var(--text-dim); font-
