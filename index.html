@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة مدرسة بلماحي للدعم - Belmahi's School</title>
-    <!-- خط تجوال العصري من Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,7 +15,6 @@
             --text-light: #f8fafc;
             --text-dim: #94a3b8;
             --border-color: #334155;
-            --glass-bg: rgba(30, 41, 59, 0.7);
         }
 
         * {
@@ -24,7 +22,6 @@
             margin: 0;
             padding: 0;
             font-family: 'Tajawal', sans-serif;
-            transition: all 0.25s ease;
         }
 
         body {
@@ -33,22 +30,20 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-image: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
         }
 
         /* Top Header Navigation */
         header {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
+            background: #1e293b;
             border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: relative;
+            z-index: 10;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .brand-box {
@@ -68,7 +63,6 @@
             font-weight: 800;
             font-size: 1.2rem;
             color: #fff;
-            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
         }
 
         .brand-titles h1 {
@@ -80,7 +74,6 @@
         .brand-titles p {
             font-size: 0.75rem;
             color: var(--accent-blue);
-            letter-spacing: 0.5px;
         }
 
         .nav-switch {
@@ -89,49 +82,48 @@
             border-radius: 10px;
             display: flex;
             border: 1px solid var(--border-color);
+            gap: 5px;
         }
 
-        .nav-link {
-            padding: 8px 18px;
+        /* تحويل العناصر إلى أزرار فعلية فائقة الاستجابة */
+        .nav-btn {
+            padding: 10px 20px;
             border-radius: 8px;
             color: var(--text-dim);
-            text-decoration: none;
+            background: transparent;
+            border: none;
             font-weight: 600;
             font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
             cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .nav-link.active {
+        .nav-btn.active {
             background: var(--accent-blue);
             color: #020617;
             font-weight: 700;
             box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
         }
 
-        /* Container & Layout */
+        /* Main Content */
         main {
             flex: 1;
             max-width: 1100px;
             width: 100%;
             margin: 2rem auto;
             padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .page-section {
             display: none;
-            animation: fadeIn 0.4s ease-in-out forwards;
         }
 
         .page-section.active {
             display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Section Headings */
@@ -145,25 +137,14 @@
         .section-header h2 {
             font-size: 1.5rem;
             color: var(--text-light);
-            position: relative;
+            border-right: 4px solid var(--accent-blue);
             padding-right: 12px;
-        }
-
-        .section-header h2::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 20%;
-            height: 60%;
-            width: 4px;
-            background: var(--accent-blue);
-            border-radius: 2px;
         }
 
         /* Grid Cards Layout */
         .grid-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
@@ -175,13 +156,6 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
 
         .card-header {
@@ -214,11 +188,6 @@
             width: fit-content;
         }
 
-        .pdf-btn:hover {
-            background: #ef4444;
-            color: #fff;
-        }
-
         /* Forms Styling */
         .form-control {
             display: flex;
@@ -243,15 +212,11 @@
             outline: none;
         }
 
-        .form-control input:focus, .form-control textarea:focus {
-            border-color: var(--accent-blue);
-        }
-
         .action-btn {
             background: var(--accent-blue);
             color: #020617;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
@@ -262,7 +227,7 @@
             opacity: 0.9;
         }
 
-        /* Password Auth Section */
+        /* Auth Box */
         .auth-box {
             max-width: 400px;
             margin: 3rem auto;
@@ -287,28 +252,168 @@
         </div>
 
         <nav class="nav-switch">
-            <div id="navStudent" class="nav-link active" onclick="showSection('student')">
-                🎓 فضاء التلميذ
-            </div>
-            <div id="navTeacher" class="nav-link" onclick="showSection('teacher')">
-                👨‍🏫 فضاء الأستاذ
-            </div>
+            <button type="button" id="btnStudent" class="nav-btn active">🎓 فضاء التلميذ</button>
+            <button type="button" id="btnTeacher" class="nav-btn">👨‍🏫 فضاء الأستاذ</button>
         </nav>
     </header>
 
     <main>
 
         <!-- 1. فضاء التلميذ -->
-        <section id="student" class="page-section active">
+        <section id="studentSection" class="page-section active">
             <div class="section-header">
                 <h2>الواجبات والتمارين المتاحة</h2>
             </div>
 
             <div class="grid-cards">
-                <!-- واجب محاكى -->
                 <div class="card">
                     <div class="card-header">
                         <h3>تمرين في الفيزياء - الميكانيك</h3>
                         <span class="card-tag">علوم تجريبية - بكالوريا</span>
                     </div>
-                    <p style="color: var(--text-dim); font-
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">
+                        تحضير تمارين السقوط الشاقولي وحركة القذائف.
+                    </p>
+                    <a href="#" class="pdf-btn" target="_blank">
+                        📄 تحميل موضوع التمرين (PDF)
+                    </a>
+
+                    <hr style="border-color: var(--border-color); opacity: 0.3;">
+
+                    <div class="form-control">
+                        <label>إرسال إجابة التلميذ:</label>
+                        <textarea id="ans_1" rows="3" placeholder="اكتب نتائجك أو خطوات الحل هنا..."></textarea>
+                    </div>
+                    <button type="button" class="action-btn" id="btnSubmitAnswer">تسليم الحل للأستاذ</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. حماية فضاء الأستاذ -->
+        <section id="authSection" class="page-section">
+            <div class="auth-box">
+                <h3 style="margin-bottom: 0.5rem;">دخول فضاء الأستاذ</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">أدخل كلمة المرور الخاصة بالأستاذ</p>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <input type="password" id="passInput" placeholder="كلمة المرور..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: #090d16; color: white;">
+                </div>
+                <p id="passErr" style="color: #ef4444; font-size: 0.85rem; display: none; margin-bottom: 1rem;">كلمة المرور غير صحيحة!</p>
+                <button type="button" class="action-btn" id="btnAuthCheck">تأكيد الدخول</button>
+            </div>
+        </section>
+
+        <!-- 3. لوحة تحكم الأستاذ -->
+        <section id="dashboardSection" class="page-section">
+            <div class="section-header">
+                <h2>لوحة تحكم الأستاذ - إضافة وتصحيح</h2>
+                <button type="button" id="btnLogout" style="background: transparent; color: var(--text-dim); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; cursor: pointer;">خروج</button>
+            </div>
+
+            <div class="grid-cards">
+                <!-- رفع واجب جديد -->
+                <div class="card">
+                    <h3>➕ نشر واجب أو تمرين جديد</h3>
+                    <div class="form-control">
+                        <label>عنوان التمرين</label>
+                        <input type="text" placeholder="مثال: واجب الرياضيات - الدوال">
+                    </div>
+                    <div class="form-control">
+                        <label>المستوى الدراسي</label>
+                        <input type="text" placeholder="مثال: 3 ثانوي علوم">
+                    </div>
+                    <div class="form-control">
+                        <label>ملف PDF</label>
+                        <input type="file" accept=".pdf">
+                    </div>
+                    <button type="button" class="action-btn" style="background: var(--accent-green);" onclick="alert('تم نشر الواجب بنجاح!')">نشر الواجب الآن</button>
+                </div>
+
+                <!-- تصحيح الإجابات -->
+                <div class="card">
+                    <h3>📝 إجابات التلاميذ المسلمة</h3>
+                    <div style="background: #090d16; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <strong style="color: var(--accent-blue);">التلميذ: علاء الدين</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">الحل: تم تطبيق القانون الأول والمحصلة مساوية للصفر...</p>
+                    </div>
+                    <div class="form-control" style="margin-top: 8px;">
+                        <label>منح نقطة وملاحظة:</label>
+                        <input type="text" placeholder="مثال: 18/20 - ممتاز أحسنت">
+                    </div>
+                    <button type="button" class="action-btn" onclick="alert('تم حفظ التصحيح وإرسال النقطة للتلميذ!')">حفظ التصحيح</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var btnStudent = document.getElementById('btnStudent');
+            var btnTeacher = document.getElementById('btnTeacher');
+            var btnAuthCheck = document.getElementById('btnAuthCheck');
+            var btnSubmitAnswer = document.getElementById('btnSubmitAnswer');
+            var btnLogout = document.getElementById('btnLogout');
+
+            var studentSection = document.getElementById('studentSection');
+            var authSection = document.getElementById('authSection');
+            var dashboardSection = document.getElementById('dashboardSection');
+
+            var passInput = document.getElementById('passInput');
+            var passErr = document.getElementById('passErr');
+
+            // Switch to Student View
+            btnStudent.onclick = function() {
+                studentSection.className = "page-section active";
+                authSection.className = "page-section";
+                dashboardSection.className = "page-section";
+
+                btnStudent.className = "nav-btn active";
+                btnTeacher.className = "nav-btn";
+            };
+
+            // Switch to Teacher View
+            btnTeacher.onclick = function() {
+                studentSection.className = "page-section";
+                authSection.className = "page-section active";
+                dashboardSection.className = "page-section";
+
+                btnStudent.className = "nav-btn";
+                btnTeacher.className = "nav-btn active";
+                passErr.style.display = "none";
+                passInput.value = "";
+            };
+
+            // Verify Password
+            btnAuthCheck.onclick = function() {
+                if (passInput.value === "momo31.A") {
+                    authSection.className = "page-section";
+                    dashboardSection.className = "page-section active";
+                    passErr.style.display = "none";
+                } else {
+                    passErr.style.display = "block";
+                }
+            };
+
+            // Logout Teacher
+            if(btnLogout) {
+                btnLogout.onclick = function() {
+                    btnStudent.click();
+                };
+            }
+
+            // Student Submit
+            if(btnSubmitAnswer) {
+                btnSubmitAnswer.onclick = function() {
+                    var ans = document.getElementById('ans_1').value;
+                    if(!ans.trim()) {
+                        alert('يرجى كتابة الإجابة أولاً');
+                        return;
+                    }
+                    alert('تم إرسال إجابتك بنجاح للأستاذ!');
+                    document.getElementById('ans_1').value = '';
+                };
+            }
+        });
+    </script>
+</body>
+</html>
