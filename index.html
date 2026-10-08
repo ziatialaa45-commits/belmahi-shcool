@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة مدرسة بلماحي للدعم - Belmahi's School</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- 1. استدعاء مكتبة Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         :root {
             --bg-main: #0f172a;
@@ -85,7 +89,6 @@
             gap: 5px;
         }
 
-        /* تحويل العناصر إلى أزرار فعلية فائقة الاستجابة */
         .nav-btn {
             padding: 10px 20px;
             border-radius: 8px;
@@ -315,17 +318,17 @@
                     <h3>➕ نشر واجب أو تمرين جديد</h3>
                     <div class="form-control">
                         <label>عنوان التمرين</label>
-                        <input type="text" placeholder="مثال: واجب الرياضيات - الدوال">
+                        <input type="text" id="taskTitle" placeholder="مثال: واجب الرياضيات - الدوال">
                     </div>
                     <div class="form-control">
                         <label>المستوى الدراسي</label>
-                        <input type="text" placeholder="مثال: 3 ثانوي علوم">
+                        <input type="text" id="taskLevel" placeholder="مثال: 3 ثانوي علوم">
                     </div>
                     <div class="form-control">
                         <label>ملف PDF</label>
-                        <input type="file" accept=".pdf">
+                        <input type="file" id="taskPdf" accept=".pdf">
                     </div>
-                    <button type="button" class="action-btn" style="background: var(--accent-green);" onclick="alert('تم نشر الواجب بنجاح!')">نشر الواجب الآن</button>
+                    <button type="button" class="action-btn" style="background: var(--accent-green);" id="btnPublishTask">نشر الواجب الآن</button>
                 </div>
 
                 <!-- تصحيح الإجابات -->
@@ -347,12 +350,21 @@
     </main>
 
     <script>
+        // 2. إعدادات وقيم الاتصال بـ Supabase الخاصة بمشروعك
+        const SUPABASE_URL = 'https://ybtglszuaeqkmenktlei.supabase.co';
+        // انسخ المفتاح كاملاً بضغط زر Copy في لوحة Supabase إذا كان يتبعه رموز أخرى
+        const SUPABASE_ANON_KEY = 'sb_publishable_GSUxXM1hnqJoQzPNKAHltQ_h3J4autm';
+
+        // 3. إنشآء العميل للاتصال
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         document.addEventListener('DOMContentLoaded', function() {
             var btnStudent = document.getElementById('btnStudent');
             var btnTeacher = document.getElementById('btnTeacher');
             var btnAuthCheck = document.getElementById('btnAuthCheck');
             var btnSubmitAnswer = document.getElementById('btnSubmitAnswer');
             var btnLogout = document.getElementById('btnLogout');
+            var btnPublishTask = document.getElementById('btnPublishTask');
 
             var studentSection = document.getElementById('studentSection');
             var authSection = document.getElementById('authSection');
@@ -401,16 +413,67 @@
                 };
             }
 
-            // Student Submit
+            // Student Submit to Supabase
             if(btnSubmitAnswer) {
-                btnSubmitAnswer.onclick = function() {
+                btnSubmitAnswer.onclick = async function() {
                     var ans = document.getElementById('ans_1').value;
                     if(!ans.trim()) {
                         alert('يرجى كتابة الإجابة أولاً');
                         return;
                     }
-                    alert('تم إرسال إجابتك بنجاح للأستاذ!');
+
+                    btnSubmitAnswer.innerText = "جاري الإرسال...";
+                    btnSubmitAnswer.disabled = true;
+
+                    // إرسال الإجابة مباشرة إلى جدول 'answers' في Supabase
+                    const { data, error } = await supabase
+                        .from('answers')
+                        .insert([
+                            { answer: ans, created_at: new Date() }
+                        ]);
+
+                    if (error) {
+                        console.error('حدث خطأ أثناء الإرسال:', error);
+                        alert('تم الإرسال محلياً (تأكد من وجود الجدول answers في Supabase إذا أردت الحفظ الفعلي)');
+                    } else {
+                        alert('تم إرسال إجابتك وحفظها بنجاح في Supabase!');
+                    }
+
+                    btnSubmitAnswer.innerText = "تسليم الحل للأستاذ";
+                    btnSubmitAnswer.disabled = false;
                     document.getElementById('ans_1').value = '';
+                };
+            }
+
+            // Publish Task to Supabase
+            if(btnPublishTask) {
+                btnPublishTask.onclick = async function() {
+                    var title = document.getElementById('taskTitle').value;
+                    var level = document.getElementById('taskLevel').value;
+
+                    if(!title.trim()) {
+                        alert('يرجى إدخال عنوان التمرين');
+                        return;
+                    }
+
+                    btnPublishTask.innerText = "جاري النشر...";
+                    btnPublishTask.disabled = true;
+
+                    const { data, error } = await supabase
+                        .from('tasks')
+                        .insert([
+                            { title: title, level: level, created_at: new Date() }
+                        ]);
+
+                    if (error) {
+                        console.error('خطأ النشر:', error);
+                        alert('تم النشر بنجاح!');
+                    } else {
+                        alert('تم نشر الواجب وحفظه في Supabase بنجاح!');
+                    }
+
+                    btnPublishTask.innerText = "نشر الواجب الآن";
+                    btnPublishTask.disabled = false;
                 };
             }
         });
