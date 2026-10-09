@@ -6,7 +6,7 @@
     <title>منصة مدرسة بلماحي للدعم - Belmahi's School</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
-    <!-- 1. استدعاء مكتبة Supabase JS -->
+    <!-- مكتبة Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -15,7 +15,6 @@
             --bg-card: #1e293b;
             --accent-blue: #38bdf8;
             --accent-green: #10b981;
-            --accent-gold: #f59e0b;
             --text-light: #f8fafc;
             --text-dim: #94a3b8;
             --border-color: #334155;
@@ -36,12 +35,9 @@
             flex-direction: column;
         }
 
-        /* Top Header Navigation */
         header {
             background: #1e293b;
             border-bottom: 1px solid var(--border-color);
-            position: relative;
-            z-index: 10;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -72,7 +68,6 @@
         .brand-titles h1 {
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--text-light);
         }
 
         .brand-titles p {
@@ -98,27 +93,20 @@
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .nav-btn.active {
             background: var(--accent-blue);
             color: #020617;
             font-weight: 700;
-            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
         }
 
-        /* Main Content */
         main {
             flex: 1;
             max-width: 1100px;
             width: 100%;
             margin: 2rem auto;
             padding: 0 1.5rem;
-            position: relative;
-            z-index: 1;
         }
 
         .page-section {
@@ -129,22 +117,16 @@
             display: block;
         }
 
-        /* Section Headings */
         .section-header {
             margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .section-header h2 {
             font-size: 1.5rem;
-            color: var(--text-light);
             border-right: 4px solid var(--accent-blue);
             padding-right: 12px;
         }
 
-        /* Grid Cards Layout */
         .grid-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -161,76 +143,30 @@
             gap: 1rem;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .card-tag {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-
-        .pdf-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 8px 14px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            width: fit-content;
-        }
-
-        /* Forms Styling */
         .form-control {
             display: flex;
             flex-direction: column;
             gap: 6px;
-            margin-bottom: 1rem;
-        }
-
-        .form-control label {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            font-weight: 600;
         }
 
         .form-control input, .form-control textarea {
             background: #090d16;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 10px 14px;
-            color: var(--text-light);
-            font-size: 0.95rem;
-            outline: none;
+            padding: 10px;
+            color: white;
         }
 
         .action-btn {
             background: var(--accent-blue);
             color: #020617;
             border: none;
-            padding: 12px 20px;
+            padding: 12px;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
-            width: 100%;
         }
 
-        .action-btn:hover {
-            opacity: 0.9;
-        }
-
-        /* Auth Box */
         .auth-box {
             max-width: 400px;
             margin: 3rem auto;
@@ -244,7 +180,6 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header>
         <div class="brand-box">
             <div class="logo-circle">BS</div>
@@ -261,46 +196,33 @@
     </header>
 
     <main>
-
         <!-- 1. فضاء التلميذ -->
         <section id="studentSection" class="page-section active">
             <div class="section-header">
                 <h2>الواجبات والتمارين المتاحة</h2>
             </div>
-
             <div class="grid-cards">
                 <div class="card">
-                    <div class="card-header">
-                        <h3>تمرين في الفيزياء - الميكانيك</h3>
-                        <span class="card-tag">علوم تجريبية - بكالوريا</span>
-                    </div>
-                    <p style="color: var(--text-dim); font-size: 0.9rem;">
-                        تحضير تمارين السقوط الشاقولي وحركة القذائف.
-                    </p>
-                    <a href="#" class="pdf-btn" target="_blank">
-                        📄 تحميل موضوع التمرين (PDF)
-                    </a>
-
-                    <hr style="border-color: var(--border-color); opacity: 0.3;">
-
+                    <h3>تمرين في الفيزياء - الميكانيك</h3>
+                    <p style="color: var(--text-dim);">تحضير تمارين السقوط الشاقولي وحركة القذائف.</p>
                     <div class="form-control">
                         <label>إرسال إجابة التلميذ:</label>
-                        <textarea id="ans_1" rows="3" placeholder="اكتب نتائجك أو خطوات الحل هنا..."></textarea>
+                        <textarea id="ans_1" rows="3" placeholder="اكتب الحل هنا..."></textarea>
                     </div>
                     <button type="button" class="action-btn" id="btnSubmitAnswer">تسليم الحل للأستاذ</button>
                 </div>
             </div>
         </section>
 
-        <!-- 2. حماية فضاء الأستاذ -->
+        <!-- 2. دخول الأستاذ -->
         <section id="authSection" class="page-section">
             <div class="auth-box">
-                <h3 style="margin-bottom: 0.5rem;">دخول فضاء الأستاذ</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">أدخل كلمة المرور الخاصة بالأستاذ</p>
-                <div class="form-group" style="margin-bottom: 1rem;">
-                    <input type="password" id="passInput" placeholder="كلمة المرور..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: #090d16; color: white;">
+                <h3>دخول فضاء الأستاذ</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem;">أدخل كلمة المرور</p>
+                <div class="form-control" style="margin-bottom: 1rem;">
+                    <input type="password" id="passInput" placeholder="كلمة المرور...">
                 </div>
-                <p id="passErr" style="color: #ef4444; font-size: 0.85rem; display: none; margin-bottom: 1rem;">كلمة المرور غير صحيحة!</p>
+                <p id="passErr" style="color: #ef4444; display: none; margin-bottom: 1rem;">كلمة المرور غير صحيحة!</p>
                 <button type="button" class="action-btn" id="btnAuthCheck">تأكيد الدخول</button>
             </div>
         </section>
@@ -308,175 +230,88 @@
         <!-- 3. لوحة تحكم الأستاذ -->
         <section id="dashboardSection" class="page-section">
             <div class="section-header">
-                <h2>لوحة تحكم الأستاذ - إضافة وتصحيح</h2>
-                <button type="button" id="btnLogout" style="background: transparent; color: var(--text-dim); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; cursor: pointer;">خروج</button>
+                <h2>لوحة تحكم الأستاذ</h2>
             </div>
-
             <div class="grid-cards">
-                <!-- رفع واجب جديد -->
                 <div class="card">
-                    <h3>➕ نشر واجب أو تمرين جديد</h3>
+                    <h3>➕ نشر واجب جديد</h3>
                     <div class="form-control">
-                        <label>عنوان التمرين</label>
-                        <input type="text" id="taskTitle" placeholder="مثال: واجب الرياضيات - الدوال">
+                        <input type="text" id="taskTitle" placeholder="عنوان التمرين">
                     </div>
-                    <div class="form-control">
-                        <label>المستوى الدراسي</label>
-                        <input type="text" id="taskLevel" placeholder="مثال: 3 ثانوي علوم">
-                    </div>
-                    <div class="form-control">
-                        <label>ملف PDF</label>
-                        <input type="file" id="taskPdf" accept=".pdf">
-                    </div>
-                    <button type="button" class="action-btn" style="background: var(--accent-green);" id="btnPublishTask">نشر الواجب الآن</button>
-                </div>
-
-                <!-- تصحيح الإجابات -->
-                <div class="card">
-                    <h3>📝 إجابات التلاميذ المسلمة</h3>
-                    <div style="background: #090d16; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
-                        <strong style="color: var(--accent-blue);">التلميذ: علاء الدين</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">الحل: تم تطبيق القانون الأول والمحصلة مساوية للصفر...</p>
-                    </div>
-                    <div class="form-control" style="margin-top: 8px;">
-                        <label>منح نقطة وملاحظة:</label>
-                        <input type="text" placeholder="مثال: 18/20 - ممتاز أحسنت">
-                    </div>
-                    <button type="button" class="action-btn" onclick="alert('تم حفظ التصحيح وإرسال النقطة للتلميذ!')">حفظ التصحيح</button>
+                    <button type="button" class="action-btn" style="background: var(--accent-green);" id="btnPublishTask">نشر الواجب</button>
                 </div>
             </div>
         </section>
-
     </main>
 
     <script>
-        // 2. إعدادات وقيم الاتصال بـ Supabase الخاصة بمشروعك
+        // إعداد الاتصال بـ Supabase
         const SUPABASE_URL = 'https://ybtglszuaeqkmenktlei.supabase.co';
-        // انسخ المفتاح كاملاً بضغط زر Copy في لوحة Supabase إذا كان يتبعه رموز أخرى
         const SUPABASE_ANON_KEY = 'sb_publishable_GSUxXM1hnqJoQzPNKAHltQ_h3J4autm';
 
-        // 3. إنشآء العميل للاتصال
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        var client = null;
+        if (window.supabase) {
+            client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var btnStudent = document.getElementById('btnStudent');
-            var btnTeacher = document.getElementById('btnTeacher');
-            var btnAuthCheck = document.getElementById('btnAuthCheck');
-            var btnSubmitAnswer = document.getElementById('btnSubmitAnswer');
-            var btnLogout = document.getElementById('btnLogout');
-            var btnPublishTask = document.getElementById('btnPublishTask');
+        // أزرار التنقل
+        document.getElementById('btnStudent').onclick = function() {
+            document.getElementById('studentSection').style.display = 'block';
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'none';
 
-            var studentSection = document.getElementById('studentSection');
-            var authSection = document.getElementById('authSection');
-            var dashboardSection = document.getElementById('dashboardSection');
+            document.getElementById('btnStudent').classList.add('active');
+            document.getElementById('btnTeacher').classList.remove('active');
+        };
 
-            var passInput = document.getElementById('passInput');
-            var passErr = document.getElementById('passErr');
+        document.getElementById('btnTeacher').onclick = function() {
+            document.getElementById('studentSection').style.display = 'none';
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('dashboardSection').style.display = 'none';
 
-            // Switch to Student View
-            btnStudent.onclick = function() {
-                studentSection.className = "page-section active";
-                authSection.className = "page-section";
-                dashboardSection.className = "page-section";
+            document.getElementById('btnTeacher').classList.add('active');
+            document.getElementById('btnStudent').classList.remove('active');
+        };
 
-                btnStudent.className = "nav-btn active";
-                btnTeacher.className = "nav-btn";
-            };
-
-            // Switch to Teacher View
-            btnTeacher.onclick = function() {
-                studentSection.className = "page-section";
-                authSection.className = "page-section active";
-                dashboardSection.className = "page-section";
-
-                btnStudent.className = "nav-btn";
-                btnTeacher.className = "nav-btn active";
-                passErr.style.display = "none";
-                passInput.value = "";
-            };
-
-            // Verify Password
-            btnAuthCheck.onclick = function() {
-                if (passInput.value === "momo31.A") {
-                    authSection.className = "page-section";
-                    dashboardSection.className = "page-section active";
-                    passErr.style.display = "none";
-                } else {
-                    passErr.style.display = "block";
-                }
-            };
-
-            // Logout Teacher
-            if(btnLogout) {
-                btnLogout.onclick = function() {
-                    btnStudent.click();
-                };
+        // تسجيل الدخول
+        document.getElementById('btnAuthCheck').onclick = function() {
+            var pass = document.getElementById('passInput').value;
+            if (pass === "momo31.A") {
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+                document.getElementById('passErr').style.display = 'none';
+            } else {
+                document.getElementById('passErr').style.display = 'block';
             }
+        };
 
-            // Student Submit to Supabase
-            if(btnSubmitAnswer) {
-                btnSubmitAnswer.onclick = async function() {
-                    var ans = document.getElementById('ans_1').value;
-                    if(!ans.trim()) {
-                        alert('يرجى كتابة الإجابة أولاً');
-                        return;
-                    }
-
-                    btnSubmitAnswer.innerText = "جاري الإرسال...";
-                    btnSubmitAnswer.disabled = true;
-
-                    // إرسال الإجابة مباشرة إلى جدول 'answers' في Supabase
-                    const { data, error } = await supabase
-                        .from('answers')
-                        .insert([
-                            { answer: ans, created_at: new Date() }
-                        ]);
-
-                    if (error) {
-                        console.error('حدث خطأ أثناء الإرسال:', error);
-                        alert('تم الإرسال محلياً (تأكد من وجود الجدول answers في Supabase إذا أردت الحفظ الفعلي)');
-                    } else {
-                        alert('تم إرسال إجابتك وحفظها بنجاح في Supabase!');
-                    }
-
-                    btnSubmitAnswer.innerText = "تسليم الحل للأستاذ";
-                    btnSubmitAnswer.disabled = false;
-                    document.getElementById('ans_1').value = '';
-                };
+        // إرسال الإجابة
+        document.getElementById('btnSubmitAnswer').onclick = async function() {
+            var val = document.getElementById('ans_1').value;
+            if(!val.trim()) {
+                alert('يرجى كتابة الإجابة أولاً');
+                return;
             }
-
-            // Publish Task to Supabase
-            if(btnPublishTask) {
-                btnPublishTask.onclick = async function() {
-                    var title = document.getElementById('taskTitle').value;
-                    var level = document.getElementById('taskLevel').value;
-
-                    if(!title.trim()) {
-                        alert('يرجى إدخال عنوان التمرين');
-                        return;
-                    }
-
-                    btnPublishTask.innerText = "جاري النشر...";
-                    btnPublishTask.disabled = true;
-
-                    const { data, error } = await supabase
-                        .from('tasks')
-                        .insert([
-                            { title: title, level: level, created_at: new Date() }
-                        ]);
-
-                    if (error) {
-                        console.error('خطأ النشر:', error);
-                        alert('تم النشر بنجاح!');
-                    } else {
-                        alert('تم نشر الواجب وحفظه في Supabase بنجاح!');
-                    }
-
-                    btnPublishTask.innerText = "نشر الواجب الآن";
-                    btnPublishTask.disabled = false;
-                };
+            if(client) {
+                await client.from('answers').insert([{ answer: val }]);
             }
-        });
+            alert('تم إرسال إجابتك بنجاح!');
+            document.getElementById('ans_1').value = '';
+        };
+
+        // نشر الواجب
+        document.getElementById('btnPublishTask').onclick = async function() {
+            var title = document.getElementById('taskTitle').value;
+            if(!title.trim()) {
+                alert('يرجى إدخال العنوان');
+                return;
+            }
+            if(client) {
+                await client.from('tasks').insert([{ title: title }]);
+            }
+            alert('تم نشر الواجب بنجاح!');
+            document.getElementById('taskTitle').value = '';
+        };
     </script>
 </body>
 </html>
