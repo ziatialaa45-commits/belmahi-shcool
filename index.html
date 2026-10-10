@@ -53,17 +53,14 @@
             gap: 12px;
         }
 
-        .logo-circle {
+        /* مكان شعار الصورة في الأعلى */
+        .logo-img {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #0284c7, #0d9488);
+            object-fit: cover;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: #fff;
+            border: 1px solid var(--border-color);
+            background: #020617;
         }
 
         .brand-titles h1 {
@@ -179,6 +176,21 @@
             cursor: pointer;
         }
 
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            width: fit-content;
+        }
+
         .auth-box {
             max-width: 420px;
             margin: 2rem auto;
@@ -221,7 +233,8 @@
 
     <header>
         <div class="brand-box">
-            <div class="logo-circle">BS</div>
+            <!-- ضع رابط صورة الشعار الخاص بك هنا داخل src -->
+            <img src="image0.jpeg" alt="شعار المدرسة" class="logo-img" id="schoolLogo">
             <div class="brand-titles">
                 <h1>مدرسة بلماحي للدعم</h1>
                 <p>BELMAHI'S ACADEMY</p>
@@ -235,13 +248,13 @@
     </header>
 
     <main>
-        <!-- 1. فضاء التلميذ (تسجيل الدخول / إنشاء حساب) -->
+        <!-- 1. فضاء التلميذ -->
         <section id="studentSection" class="page-section active">
 
-            <!-- نموذج تسجيل الدخول -->
+            <!-- تسجيل الدخول -->
             <div id="studentLoginBox" class="auth-box">
                 <h3 style="text-align: center; margin-bottom: 0.5rem;">دخول فضاء التلميذ</h3>
-                <p style="text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">سجل دخولك لعرض التمارين والنقاط</p>
+                <p style="text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">سجل دخولك لعرض التمارين والملفات</p>
 
                 <div class="form-control" style="margin-bottom: 1rem;">
                     <label>الاسم واللقب</label>
@@ -253,16 +266,14 @@
                 </div>
 
                 <button type="button" class="action-btn" id="btnDoStudentLogin" style="width: 100%;">دخول</button>
-
                 <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-dim);">
                     ليس لديك حساب؟ <span class="tab-link" id="goRegister">أنشئ حساباً جديداً</span>
                 </p>
             </div>
 
-            <!-- نموذج إنشاء حساب جديد -->
+            <!-- إنشاء حساب -->
             <div id="studentRegisterBox" class="auth-box" style="display: none;">
                 <h3 style="text-align: center; margin-bottom: 0.5rem;">حساب جديد للتلميذ</h3>
-                <p style="text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">قم بتعبئة بياناتك للتسجيل</p>
 
                 <div class="form-control" style="margin-bottom: 1rem;">
                     <label>الاسم واللقب الكامل</label>
@@ -270,21 +281,20 @@
                 </div>
                 <div class="form-control" style="margin-bottom: 1rem;">
                     <label>الفوج الدراسي</label>
-                    <input type="text" id="regGroup" placeholder="مثال: فوج 1 علوم / فوج A">
+                    <input type="text" id="regGroup" placeholder="مثال: 3 ثانوي علوم">
                 </div>
                 <div class="form-control" style="margin-bottom: 1.5rem;">
-                    <label>كلمة السر الخاص بك</label>
-                    <input type="password" id="regPassword" placeholder="كلمة سر خاصة بك">
+                    <label>كلمة السر</label>
+                    <input type="password" id="regPassword" placeholder="كلمة السر الخاصة بك">
                 </div>
 
-                <button type="button" class="action-btn" id="btnDoStudentRegister" style="width: 100%; background: var(--accent-green);">إنشاء الحساب الآن</button>
-
+                <button type="button" class="action-btn" id="btnDoStudentRegister" style="width: 100%; background: var(--accent-green);">إنشاء الحساب</button>
                 <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-dim);">
-                    لديك حساب بالفعل؟ <span class="tab-link" id="goLogin">تسجيل الدخول</span>
+                    لديك حساب؟ <span class="tab-link" id="goLogin">تسجيل الدخول</span>
                 </p>
             </div>
 
-            <!-- لوحة التلميذ بعد تسجيل الدخول -->
+            <!-- لوحة التلميذ -->
             <div id="studentDashboard" style="display: none;">
                 <div class="section-header">
                     <div>
@@ -305,8 +315,7 @@
         <section id="authSection" class="page-section">
             <div class="auth-box" style="text-align: center;">
                 <h3 style="margin-bottom: 0.5rem;">دخول فضاء الأستاذ</h3>
-                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">أدخل كلمة المرور الخاصة بالأستاذ</p>
-                <div class="form-control" style="margin-bottom: 1rem;">
+                <div class="form-control" style="margin-bottom: 1rem; margin-top: 1rem;">
                     <input type="password" id="passInput" placeholder="كلمة المرور...">
                 </div>
                 <p id="passErr" style="color: #ef4444; display: none; margin-bottom: 1rem; font-size: 0.85rem;">كلمة المرور غير صحيحة!</p>
@@ -322,19 +331,23 @@
             </div>
 
             <div class="grid-cards">
-                <!-- نشر واجب -->
+                <!-- نشر واجب مع ملف PDF -->
                 <div class="card">
-                    <h3>➕ نشر واجب أو تمرين جديد</h3>
+                    <h3>➕ نشر تمرين جديد مع ملف PDF</h3>
                     <div class="form-control">
                         <label>عنوان التمرين</label>
-                        <input type="text" id="taskTitle" placeholder="مثال: واجب الرياضيات - الدوال">
+                        <input type="text" id="taskTitle" placeholder="مثال: واجب الفيزياء - الميكانيك">
+                    </div>
+                    <div class="form-control">
+                        <label>ملف التمرين (PDF)</label>
+                        <input type="file" id="taskPdfFile" accept=".pdf">
                     </div>
                     <button type="button" class="action-btn" style="background: var(--accent-green);" id="btnPublishTask">نشر الواجب الآن</button>
                 </div>
 
-                <!-- تصحيح الإجابات ومنح النقاط حسب التلميذ والفوج -->
+                <!-- إجابات التلاميذ -->
                 <div class="card" style="grid-column: span 2;">
-                    <h3>📝 إجابات التلاميذ المودعة (حسب الاسم والفوج)</h3>
+                    <h3>📝 إجابات التلاميذ (مع حلول الـ PDF المرفقة)</h3>
                     <div id="teacherAnswersContainer">
                         <p style="color: var(--text-dim);">جاري تحميل الإجابات...</p>
                     </div>
@@ -354,93 +367,63 @@
 
         let currentStudentData = JSON.parse(localStorage.getItem('belmahi_student_data')) || null;
 
-        // التنقلات بين الشاشات
-        document.getElementById('goRegister').onclick = function() {
+        // التنقلات
+        document.getElementById('goRegister').onclick = () => {
             document.getElementById('studentLoginBox').style.display = 'none';
             document.getElementById('studentRegisterBox').style.display = 'block';
         };
-
-        document.getElementById('goLogin').onclick = function() {
+        document.getElementById('goLogin').onclick = () => {
             document.getElementById('studentRegisterBox').style.display = 'none';
             document.getElementById('studentLoginBox').style.display = 'block';
         };
 
-        document.getElementById('btnStudent').onclick = function() {
+        document.getElementById('btnStudent').onclick = () => {
             document.getElementById('studentSection').style.display = 'block';
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('dashboardSection').style.display = 'none';
-
             document.getElementById('btnStudent').classList.add('active');
             document.getElementById('btnTeacher').classList.remove('active');
             checkStudentSession();
         };
 
-        document.getElementById('btnTeacher').onclick = function() {
+        document.getElementById('btnTeacher').onclick = () => {
             document.getElementById('studentSection').style.display = 'none';
             document.getElementById('authSection').style.display = 'block';
             document.getElementById('dashboardSection').style.display = 'none';
-
             document.getElementById('btnTeacher').classList.add('active');
             document.getElementById('btnStudent').classList.remove('active');
         };
 
-        // 1. إنشاء حساب جديد للتلميذ
-        document.getElementById('btnDoStudentRegister').onclick = async function() {
+        // تسجيل وحساب التلميذ
+        document.getElementById('btnDoStudentRegister').onclick = async () => {
             const name = document.getElementById('regFullName').value.trim();
             const group = document.getElementById('regGroup').value.trim();
             const pass = document.getElementById('regPassword').value.trim();
-
-            if (!name || !group || !pass) {
-                alert('يرجى ملء جميع الحقول المطلوبة');
-                return;
-            }
+            if (!name || !group || !pass) return alert('يرجى ملء جميع الحقول');
 
             if (client) {
-                const { data, error } = await client.from('students').insert([{
-                    full_name: name,
-                    group_name: group,
-                    password: pass
-                }]);
-
-                if (error) {
-                    alert('حدث خطأ أثناء إنشاء الحساب، يرجى المحاولة لاحقاً');
-                    return;
-                }
+                const { error } = await client.from('students').insert([{ full_name: name, group_name: group, password: pass }]);
+                if (error) return alert('خطأ في التسجيل');
             }
-
-            alert('تم إنشاء حسابك بنجاح! يمكنك الآن تسجيل الدخول.');
+            alert('تم إنشاء الحساب بنجاح!');
             document.getElementById('goLogin').click();
         };
 
-        // 2. تسجيل دخول التلميذ
-        document.getElementById('btnDoStudentLogin').onclick = async function() {
+        document.getElementById('btnDoStudentLogin').onclick = async () => {
             const name = document.getElementById('loginFullName').value.trim();
             const pass = document.getElementById('loginPassword').value.trim();
-
-            if (!name || !pass) {
-                alert('يرجى إدخال الاسم وكلمة السر');
-                return;
-            }
+            if (!name || !pass) return alert('أدخل الاسم وكلمة السر');
 
             if (client) {
-                const { data, error } = await client.from('students')
-                    .select('*')
-                    .eq('full_name', name)
-                    .eq('password', pass)
-                    .single();
-
-                if (error || !data) {
-                    alert('الاسم أو كلمة السر غير صحيحة!');
-                    return;
-                }
-
+                const { data, error } = await client.from('students').select('*').eq('full_name', name).eq('password', pass).single();
+                if (error || !data) return alert('البيانات غير صحيحة');
                 currentStudentData = data;
                 localStorage.setItem('belmahi_student_data', JSON.stringify(data));
                 checkStudentSession();
             }
         };
 
-        document.getElementById('btnStudentLogout').onclick = function() {
+        document.getElementById('btnStudentLogout').onclick = () => {
             localStorage.removeItem('belmahi_student_data');
             currentStudentData = null;
             checkStudentSession();
@@ -451,18 +434,16 @@
                 document.getElementById('studentLoginBox').style.display = 'none';
                 document.getElementById('studentRegisterBox').style.display = 'none';
                 document.getElementById('studentDashboard').style.display = 'block';
-
                 document.getElementById('welcomeStudentName').innerText = currentStudentData.full_name;
                 document.getElementById('welcomeStudentGroup').innerText = currentStudentData.group_name;
                 loadTasksForStudent();
             } else {
                 document.getElementById('studentLoginBox').style.display = 'block';
-                document.getElementById('studentRegisterBox').style.display = 'none';
                 document.getElementById('studentDashboard').style.display = 'none';
             }
         }
 
-        // 3. تحميل واجبات التلميذ وإجاباته الخاطة
+        // تحميل الواجبات للتلميذ مع دعم ملف الـ PDF المرفق من الأستاذ وملف الـ PDF الذي يرفعه التلميذ
         async function loadTasksForStudent() {
             const container = document.getElementById('tasksContainer');
             if(!client || !currentStudentData) return;
@@ -481,21 +462,27 @@
 
                 let cardContent = `
                     <h3>${task.title}</h3>
+                    ${task.pdf_url ? `<a href="${task.pdf_url}" class="pdf-btn" target="_blank">📄 تحميل موضوع التمرين (PDF)</a>` : ''}
                     <hr style="border-color: var(--border-color); opacity: 0.3;">
                 `;
 
                 if (existingAns) {
                     cardContent += `
-                        <p style="font-size: 0.9rem; color: var(--text-dim);">إجابتك المسلمة: ${existingAns.answer}</p>
-                        ${existingAns.grade ? `<div class="grade-badge">⭐ Mلاحظة الأستاذ والنقطة: ${existingAns.grade}</div>` : `<p style="color: var(--accent-gold); font-size: 0.85rem;">⏳ في انتظار تصحيح الأستاذ...</p>`}
+                        <p style="font-size: 0.9rem; color: var(--text-dim);">إجابتك: ${existingAns.answer || ''}</p>
+                        ${existingAns.pdf_url ? `<a href="${existingAns.pdf_url}" class="pdf-btn" target="_blank">📄 ملف الحل المرفق (PDF)</a>` : ''}
+                        ${existingAns.grade ? `<div class="grade-badge">⭐ نقطة وملاحظة الأستاذ: ${existingAns.grade}</div>` : `<p style="color: var(--accent-gold); font-size: 0.85rem;">⏳ في انتظار التصحيح...</p>`}
                     `;
                 } else {
                     cardContent += `
                         <div class="form-control">
-                            <label>إرسال الحل:</label>
-                            <textarea id="ans_${task.id}" rows="3" placeholder="اكتب الحل هنا..."></textarea>
+                            <label>اكتب ملاحظة أو حل نصي:</label>
+                            <textarea id="ans_text_${task.id}" rows="2" placeholder="اكتب ملاحظتك هنا..."></textarea>
                         </div>
-                        <button type="button" class="action-btn" onclick="submitAnswer(${task.id})">تسليم الحل للأستاذ</button>
+                        <div class="form-control">
+                            <label>أو أرفق ملف الحل (PDF):</label>
+                            <input type="file" id="ans_pdf_${task.id}" accept=".pdf">
+                        </div>
+                        <button type="button" class="action-btn" onclick="submitStudentAnswer(${task.id})">تسليم الحل للأستاذ</button>
                     `;
                 }
 
@@ -506,33 +493,44 @@
             });
         }
 
-        // تسليم إجابة التلميذ
-        async function submitAnswer(taskId) {
-            const input = document.getElementById('ans_' + taskId);
-            const val = input ? input.value.trim() : '';
+        // رفع حل التلميذ (نص + ملف PDF)
+        async function submitStudentAnswer(taskId) {
+            const textVal = document.getElementById('ans_text_' + taskId).value.trim();
+            const fileInput = document.getElementById('ans_pdf_' + taskId);
+            let pdfUrl = '';
 
-            if(!val) {
-                alert('يرجى كتابة الإجابة أولاً');
+            if(!textVal && fileInput.files.length === 0) {
+                alert('يرجى كتابة نص أو إرفاق ملف PDF على الأقل');
                 return;
             }
 
-            if(client && currentStudentData) {
+            if(client && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileName = `student_${Date.now()}_${file.name}`;
+                const { data, error } = await client.storage.from('uploads').upload(fileName, file);
+                if (!error) {
+                    const { data: publicUrlData } = client.storage.from('uploads').getPublicUrl(fileName);
+                    pdfUrl = publicUrlData.publicUrl;
+                }
+            }
+
+            if(client) {
                 await client.from('answers').insert([{
                     student_name: currentStudentData.full_name,
                     group_name: currentStudentData.group_name,
                     task_id: taskId,
-                    answer: val,
+                    answer: textVal,
+                    pdf_url: pdfUrl,
                     grade: ''
                 }]);
             }
-            alert('تم إرسال إجابتك بنجاح للأستاذ!');
+            alert('تم تسليم إجابتك بنجاح!');
             loadTasksForStudent();
         }
 
-        // 4. تسجيل دخول الأستاذ
-        document.getElementById('btnAuthCheck').onclick = function() {
-            const pass = document.getElementById('passInput').value;
-            if (pass === "momo31.A") {
+        // دخول الأستاذ ونشر التمارين مع PDF
+        document.getElementById('btnAuthCheck').onclick = () => {
+            if (document.getElementById('passInput').value === "momo31.A") {
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('dashboardSection').style.display = 'block';
                 document.getElementById('passErr').style.display = 'none';
@@ -542,28 +540,34 @@
             }
         };
 
-        document.getElementById('btnLogout').onclick = function() {
-            document.getElementById('btnStudent').click();
-        };
+        document.getElementById('btnLogout').onclick = () => document.getElementById('btnStudent').click();
 
-        // 5. نشر واجب من الأستاذ
-        document.getElementById('btnPublishTask').onclick = async function() {
-            const titleInput = document.getElementById('taskTitle');
-            const title = titleInput.value.trim();
+        document.getElementById('btnPublishTask').onclick = async () => {
+            const title = document.getElementById('taskTitle').value.trim();
+            const fileInput = document.getElementById('taskPdfFile');
+            let pdfUrl = '';
 
-            if(!title) {
-                alert('يرجى إدخال عنوان التمرين');
-                return;
+            if(!title) return alert('أدخل عنوان التمرين');
+
+            if(client && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileName = `task_${Date.now()}_${file.name}`;
+                const { data, error } = await client.storage.from('uploads').upload(fileName, file);
+                if (!error) {
+                    const { data: publicUrlData } = client.storage.from('uploads').getPublicUrl(fileName);
+                    pdfUrl = publicUrlData.publicUrl;
+                }
             }
 
             if(client) {
-                await client.from('tasks').insert([{ title: title }]);
+                await client.from('tasks').insert([{ title: title, pdf_url: pdfUrl }]);
             }
-            alert('تم نشر الواجب بنجاح!');
-            titleInput.value = '';
+            alert('تم نشر الواجب مع ملف الـ PDF بنجاح!');
+            document.getElementById('taskTitle').value = '';
+            fileInput.value = '';
         };
 
-        // 6. لوحة تحكم الأستاذ للتصحيح
+        // لوحة الأستاذ لتصحيح الإجابات وعرض ملفات الـ PDF المرفقة من الطلاب
         async function loadTeacherAnswers() {
             const container = document.getElementById('teacherAnswersContainer');
             if(!client) return;
@@ -580,15 +584,16 @@
                 const div = document.createElement('div');
                 div.className = 'answer-card';
                 div.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="color: var(--accent-blue); font-size: 1.05rem;">التلميذ: ${item.student_name}</strong>
-                        <span style="background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); padding: 3px 8px; border-radius: 6px; font-size: 0.8rem;">الفوج: ${item.group_name || 'غير محدد'}</span>
+                    <div style="display: flex; justify-content: space-between;">
+                        <strong style="color: var(--accent-blue);">التلميذ: ${item.student_name}</strong>
+                        <span style="color: var(--accent-gold); font-size: 0.85rem;">الفوج: ${item.group_name || 'غير محدد'}</span>
                     </div>
-                    <p style="font-size: 0.95rem; color: var(--text-light); margin-top: 6px;">الحل: ${item.answer}</p>
+                    <p style="font-size: 0.95rem; color: var(--text-light);">ملاحظة التلميذ: ${item.answer || 'بدون نص'}</p>
+                    ${item.pdf_url ? `<a href="${item.pdf_url}" class="pdf-btn" target="_blank">📄 تحميل حل التلميذ (PDF)</a>` : '<p style="font-size: 0.8rem; color: var(--text-dim);">لم يتم إرفاق ملف PDF</p>'}
                     <div class="form-control" style="margin-top: 8px;">
-                        <label style="font-size: 0.8rem; color: var(--text-dim);">منح نقطة وملاحظة لهذا التلميذ:</label>
+                        <label style="font-size: 0.8rem; color: var(--text-dim);">منح نقطة وملاحظة:</label>
                         <div style="display: flex; gap: 8px;">
-                            <input type="text" id="grade_${item.id}" value="${item.grade || ''}" placeholder="مثال: 18/20 - ممتاز أحسنت">
+                            <input type="text" id="grade_${item.id}" value="${item.grade || ''}" placeholder="مثال: 18/20 - ممتاز">
                             <button type="button" class="action-btn" style="padding: 6px 14px; background: var(--accent-green);" onclick="saveGrade(${item.id})">حفظ</button>
                         </div>
                     </div>
@@ -597,15 +602,12 @@
             });
         }
 
-        // حفظ النقطة والتصحيح
         async function saveGrade(answerId) {
-            const gradeInput = document.getElementById('grade_' + answerId);
-            const gradeVal = gradeInput ? gradeInput.value.trim() : '';
-
+            const gradeVal = document.getElementById('grade_' + answerId).value.trim();
             if(client) {
                 await client.from('answers').update({ grade: gradeVal }).eq('id', answerId);
             }
-            alert('تم حفظ التصحيح بنجاح وملاحظتك أصبحت متوفرة للتلميذ في حسابه الخاص!');
+            alert('تم حفظ النقطة بنجاح وتحديثها للتلميذ!');
             loadTeacherAnswers();
         }
 
