@@ -176,6 +176,14 @@
             border-radius: 16px;
             border: 1px solid var(--border-color);
         }
+
+        .answer-item {
+            background: #090d16;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -201,16 +209,10 @@
             <div class="section-header">
                 <h2>الواجبات والتمارين المتاحة</h2>
             </div>
-            <div class="grid-cards">
-                <div class="card">
-                    <h3>تمرين في الفيزياء - الميكانيك</h3>
-                    <p style="color: var(--text-dim);">تحضير تمارين السقوط الشاقولي وحركة القذائف.</p>
-                    <div class="form-control">
-                        <label>إرسال إجابة التلميذ:</label>
-                        <textarea id="ans_1" rows="3" placeholder="اكتب الحل هنا..."></textarea>
-                    </div>
-                    <button type="button" class="action-btn" id="btnSubmitAnswer">تسليم الحل للأستاذ</button>
-                </div>
+
+            <!-- هنا ستظهر التمارين المحملة من Supabase تلقائياً -->
+            <div class="grid-cards" id="tasksContainer">
+                <p style="color: var(--text-dim);">جاري تحميل التمارين...</p>
             </div>
         </section>
 
@@ -233,19 +235,28 @@
                 <h2>لوحة تحكم الأستاذ</h2>
             </div>
             <div class="grid-cards">
+                <!-- إضافة واجب -->
                 <div class="card">
                     <h3>➕ نشر واجب جديد</h3>
                     <div class="form-control">
-                        <input type="text" id="taskTitle" placeholder="عنوان التمرين">
+                        <label>عنوان التمرين</label>
+                        <input type="text" id="taskTitle" placeholder="مثال: واجب الفيزياء - الميكانيك">
                     </div>
-                    <button type="button" class="action-btn" style="background: var(--accent-green);" id="btnPublishTask">نشر الواجب</button>
+                    <button type="button" class="action-btn" style="background: var(--accent-green);" id="btnPublishTask">نشر الواجب الآن</button>
+                </div>
+
+                <!-- عرض إجابات التلاميذ -->
+                <div class="card">
+                    <h3>📝 إجابات التلاميذ المسلمة</h3>
+                    <div id="answersContainer">
+                        <p style="color: var(--text-dim);">جاري تحميل الإجابات...</p>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
     <script>
-        // إعداد الاتصال بـ Supabase
         const SUPABASE_URL = 'https://ybtglszuaeqkmenktlei.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_GSUxXM1hnqJoQzPNKAHltQ_h3J4autm';
 
@@ -262,6 +273,7 @@
 
             document.getElementById('btnStudent').classList.add('active');
             document.getElementById('btnTeacher').classList.remove('active');
+            loadTasks(); // إعادة جلب الواجبات
         };
 
         document.getElementById('btnTeacher').onclick = function() {
@@ -273,45 +285,110 @@
             document.getElementById('btnStudent').classList.remove('active');
         };
 
-        // تسجيل الدخول
+        // تسجيل دخول الأستاذ
         document.getElementById('btnAuthCheck').onclick = function() {
             var pass = document.getElementById('passInput').value;
             if (pass === "momo31.A") {
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('dashboardSection').style.display = 'block';
                 document.getElementById('passErr').style.display = 'none';
+                loadAnswers(); // جلب إجابات التلاميذ للأستاذ
             } else {
                 document.getElementById('passErr').style.display = 'block';
             }
         };
 
-        // إرسال الإجابة
-        document.getElementById('btnSubmitAnswer').onclick = async function() {
-            var val = document.getElementById('ans_1').value;
+        // 1. جلب التمارين المرفوعة وعرضها للتلميذ
+        async function loadTasks() {
+            var container = document.getElementById('tasksContainer');
+            if(!client) return;
+
+            const { data, error } = await client.from('tasks').select('*').order('created_at', { ascending: false });
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-dim);">لا توجد تمارين متاحة حالياً.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            data.forEach(function(task) {
+                var card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${task.title}</h3>
+                    <hr style="border-color: var(--border-color); opacity: 0.3;">
+                    <div class="form-control">
+                        <label>إرسال إجابة التلميذ:</label>
+                        <textarea id="ans_${task.id}" rows="3" placeholder="اكتب الحل هنا..."></textarea>
+                    </div>
+                    <button type="button" class="action-btn" onclick="submitStudentAnswer(${task.id})">تسليم الحل للأستاذ</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 2. إرسال إجابة التلميذ إلى Supabase
+        async function submitStudentAnswer(taskId) {
+            var input = document.getElementById('ans_' + taskId);
+            var val = input ? input.value : '';
+
             if(!val.trim()) {
                 alert('يرجى كتابة الإجابة أولاً');
                 return;
             }
-            if(client) {
-                await client.from('answers').insert([{ answer: val }]);
-            }
-            alert('تم إرسال إجابتك بنجاح!');
-            document.getElementById('ans_1').value = '';
-        };
 
-        // نشر الواجب
+            if(client) {
+                await client.from('answers').insert([{ answer: val, task_id: taskId }]);
+            }
+            alert('تم إرسال إجابتك بنجاح للأستاذ!');
+            if(input) input.value = '';
+        }
+
+        // 3. نشر واجب جديد من الأستاذ
         document.getElementById('btnPublishTask').onclick = async function() {
-            var title = document.getElementById('taskTitle').value;
+            var titleInput = document.getElementById('taskTitle');
+            var title = titleInput.value;
+
             if(!title.trim()) {
-                alert('يرجى إدخال العنوان');
+                alert('يرجى إدخال عنوان التمرين');
                 return;
             }
+
             if(client) {
                 await client.from('tasks').insert([{ title: title }]);
             }
-            alert('تم نشر الواجب بنجاح!');
-            document.getElementById('taskTitle').value = '';
+            alert('تم نشر الواجب بنجاح وسيظهر فوراً للطلاب!');
+            titleInput.value = '';
+            loadTasks();
         };
+
+        // 4. جلب إجابات التلاميذ وعرضها للأستاذ
+        async function loadAnswers() {
+            var container = document.getElementById('answersContainer');
+            if(!client) return;
+
+            const { data, error } = await client.from('answers').select('*').order('created_at', { ascending: false });
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-dim);">لا توجد إجابات مسلمة حتى الآن.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            data.forEach(function(item) {
+                var div = document.createElement('div');
+                div.className = 'answer-item';
+                div.innerHTML = `
+                    <strong style="color: var(--accent-blue);">إجابة تلميذ:</strong>
+                    <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 5px;">${item.answer}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // تحضير البيانات عند بدء الفتح
+        loadTasks();
     </script>
 </body>
 </html>
+
